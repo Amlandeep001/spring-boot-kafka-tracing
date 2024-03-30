@@ -9,7 +9,6 @@ import com.org.springboot.kafkaTracing.model.ExampleMessage;
 @Service
 public class KafkaProducer
 {
-
 	private final KafkaTemplate<String, ExampleMessage> kafkaTemplate;
 	private final String topic;
 

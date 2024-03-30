@@ -26,12 +26,12 @@ import com.org.springboot.kafkaTracing.model.ExampleMessage;
 @EnableKafka
 public class KafkaConfig
 {
+	private final String bootstrapServers;
 
-	@Value("${spring.kafka.bootstrap-servers}")
-	private String bootstrapServers;
-
-	/*@Value("${spring.kafka.consumer.group-id}")
-	private String groupId;*/
+	public KafkaConfig(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers)
+	{
+		this.bootstrapServers = bootstrapServers;
+	}
 
 	@Bean
 	ProducerFactory<String, ExampleMessage> producerFactory()
@@ -54,12 +54,10 @@ public class KafkaConfig
 	{
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		// props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
 				StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
 				JsonDeserializer.class);
-		// props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.org.springboot.kafkaTracing.model");
 		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(ExampleMessage.class));
 	}
 
